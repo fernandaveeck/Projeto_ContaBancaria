@@ -1,16 +1,16 @@
-import { log } from "console";
 import { Conta } from "./Conta";
 
 export class ContaCorrente extends Conta {
 
     private _limite: number;
 
-    constructor(numero: number, agencia: number, tipo: number, titular: string, saldo: number, limite: number) {
+    constructor(numero: number, agencia: number, tipo: number, titular: string,
+        saldo: number, limite: number) {
         super(numero, agencia, tipo, titular, saldo);
         this._limite = limite;
     }
 
-    public get limite(){
+    public get limite() {
         return this._limite;
     }
     public set limite(limite: number) {
@@ -18,16 +18,17 @@ export class ContaCorrente extends Conta {
     }
 
     public sacar(valor: number): boolean {
-        if((this.saldo + this._limite) < valor) {
-            console.log("\nSaldo insuficiente!");
+
+        if ((this.saldo + this._limite) < valor) {
+            console.log("Saldo Insuficiente!");
             return false;
         }
         this.saldo = this.saldo - valor;
         return true;
     }
 
-    public vizualizar(): void {
-        super.vizualizar();
-        console.log(`Limite: ${this._limite.toFixed(2)}`);
+    public visualizar(): void {
+        super.visualizar();
+        console.log("Limite: " + this._limite.toFixed(2));
     }
 }

@@ -1,5 +1,3 @@
-import { log } from "console";
-
 export class Conta {
 
     private _numero: number;
@@ -52,10 +50,12 @@ export class Conta {
     }
 
     public sacar(valor: number): boolean {
+
         if (this._saldo < valor) {
-            console.log("Saldo Insuficiente!");
+            console.log("\n Saldo Insuficiente!");
             return false;
         }
+
         this._saldo = this._saldo - valor;
         return true;
     }
@@ -64,7 +64,7 @@ export class Conta {
         this._saldo = this._saldo + valor;
     }
 
-    public vizualizar(): void {
+    public visualizar(): void {
 
         let tipo: string = "";
 
@@ -72,22 +72,18 @@ export class Conta {
             case 1:
                 tipo = "Conta Corrente";
                 break;
-
             case 2:
                 tipo = "Conta Poupança";
                 break;
         }
-        console.log("\n****************************************");
-        console.log("            DADOS DA CONTA             ");
-        console.log("****************************************");
-        console.log("                                         ");
-        console.log(`Numero da Conta: ${this._numero}`);
-        console.log(`Agência: ${this._agencia}`);
-        console.log(`Tipo da Conta: ${this.tipo}`);
-        console.log(`Titular: ${this._titular}`);
-        console.log(`Saldo: ${this._saldo.toFixed(2)}`);
-        console.log("\n****************************************");
-        console.log("                                         ");
 
+        console.log("\n\n*****************************************************");
+        console.log("                 DADOS DA CONTA:                     ");
+        console.log("*****************************************************");
+        console.log("Numero da Conta: " + this._numero);
+        console.log("Agência: " + this._agencia);
+        console.log("Tipo da Conta: " + tipo);
+        console.log("Titular: " + this._titular);
+        console.log("Saldo: " + this._saldo.toFixed(2));
     }
 }
