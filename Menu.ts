@@ -91,19 +91,46 @@ export function main() {
                 break;
             case 3:
                 console.log(colors.fg.whitestrong, "\n\nConsultar dados da Conta - por número\n\n", colors.reset);
+                numero = readlinesync.questionInt("Digite o numero da Conta: ");
+                contas.procurarPorNumero(numero);
 
                 keyPress()
                 break;
             case 4:
                 console.log(colors.fg.whitestrong, "\n\nAtualizar dados da Conta\n\n", colors.reset);
+                numero = readlinesync.questionInt("Digite o numero da Conta: ");
 
+                let conta = contas.buscarNoArray(numero);
+                if (conta != null) {
+                    agencia = readlinesync.questionInt("Digite o Numero da agencia: ");
+                    titular = readlinesync.question("Digite o nome do Titular da Conta: ");
+                    tipo = conta.tipo;
+                    saldo = readlinesync.questionFloat("\nDigite o Saldo da Conta: ");
+
+                    switch (tipo) {
+                        case 1:
+                            limite = readlinesync.questionFloat("Digite o Limite da Conta: R$");
+                            contas.atualizar(new ContaCorrente(numero, agencia, tipo, titular, saldo, limite));
+                            break;
+
+                        case 2:
+                            aniversario = readlinesync.questionInt("Digite o dia do aniversario da Conta Poupanca: ");
+                            contas.atualizar(new ContaPoupanca(numero, agencia, tipo, titular, saldo, aniversario));
+                            break;
+                    }
+                } else {
+                    console.log(colors.fg.red, `\nA Conta numero ${numero} não foi encontrada!`, colors.reset);
+                }
                 keyPress()
                 break;
             case 5:
                 console.log(colors.fg.whitestrong, "\n\nApagar uma Conta\n\n", colors.reset);
+                numero = readlinesync.questionInt("Digite o numero da Conta: ");
+                contas.deletar(numero);
 
                 keyPress()
                 break;
+                
             case 6:
                 console.log(colors.fg.whitestrong, "\n\nSaque\n\n", colors.reset);
 

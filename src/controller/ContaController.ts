@@ -8,7 +8,12 @@ export class ContaController implements ContaRepository {
     numero: number = 0;
 
     procurarPorNumero(numero: number): void {
-        throw new Error("Method not implemented.");
+        let buscaConta = this.buscarNoArray(numero);
+        if (buscaConta != null) {
+            buscaConta.visualizar();
+        } else {
+            console.log(colors.fg.red, `\nA Conta numero: ${numero} não foi encontrada!`, colors.reset);
+        }
     }
 
     listarTodas(): void {
@@ -19,15 +24,30 @@ export class ContaController implements ContaRepository {
 
     cadastrar(conta: Conta): void {
         this.listaContas.push(conta);
-        console.log(colors.fg.green,`\nA conta numero: ${conta.numero} foi criada com sucesso!`, colors.reset);
+        console.log(colors.fg.green, `\nA Conta numero: ${conta.numero} foi criada com sucesso!`, colors.reset);
     }
 
     atualizar(conta: Conta): void {
-        throw new Error("Method not implemented.");
+        let buscaConta = this.buscarNoArray(conta.numero);
+        if (buscaConta != null) {
+            this.listaContas[this.listaContas.indexOf(buscaConta)] = conta;
+            console.log(colors.fg.green, `\nA Conta numero: ${conta.numero} foi atualizada com sucesso!`, colors.reset);
+
+        } else {
+            console.log(colors.fg.red, `\nA Conta numero: ${conta.numero} não foi encontrada!`, colors.reset);
+        }
     }
 
     deletar(numero: number): void {
-        throw new Error("Method not implemented.");
+        let buscaConta = this.buscarNoArray(numero);
+
+        if (buscaConta != null) {
+            this.listaContas.splice(this.listaContas.indexOf(buscaConta), 1);
+            console.log(colors.fg.green, `\nA Conta numero: ${numero} foi apagada com sucesso!`, colors.reset);
+
+        } else {
+            console.log(colors.fg.red, `\nA Conta numero: ${numero} não foi encontrada!`, colors.reset);
+        }
     }
 
     sacar(numero: number, valor: number): void {
@@ -44,6 +64,15 @@ export class ContaController implements ContaRepository {
 
     public gerarNumero(): number {
         return ++this.numero;
+    }
+
+    public buscarNoArray(numero: number): Conta | null {
+        for (let conta of this.listaContas) {
+            if (conta.numero === numero) {
+                return conta;
+            }
+        }
+        return null;
     }
 
 }
