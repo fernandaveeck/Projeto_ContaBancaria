@@ -3,24 +3,32 @@ import { colors } from './src/util/Colors';
 import { Conta } from "./src/util/model/Conta";
 import { ContaCorrente } from "./src/util/model/ContaCorrente";
 import { ContaPoupanca } from "./src/util/model/ContaPoupanca";
+import { ContaController } from "./src/controller/ContaController";
 
 export function main() {
 
-    let opcao: number;
+    let contas: ContaController = new ContaController();
 
-    const contacorrente: ContaCorrente = new ContaCorrente(2, 123, 1, "Mariana", 15000, 1000);
-    contacorrente.visualizar();
-    contacorrente.sacar(2000);
-    contacorrente.visualizar();
-    contacorrente.depositar(1000);
-    contacorrente.visualizar();
+    let opcao, numero, agencia, tipo, saldo, limite, aniversario: number;
+    let titular: string;
+    const tiposContas = ["Conta Corrente", "Conta Poupanca"];
 
-    const contapoupanca: ContaPoupanca = new ContaPoupanca(3, 123, 2, "Victor", 1000, 10);
-    contapoupanca.visualizar();
-    contapoupanca.sacar(200);
-    contapoupanca.visualizar();
-    contapoupanca.depositar(1000);
-    contapoupanca.visualizar();
+    console.log("\nCriar Contas\n");
+
+    let contaCorrente1: ContaCorrente = new ContaCorrente(contas.gerarNumero(), 123, 1, "João da Silva", 1000, 100.0);
+    contas.cadastrar(contaCorrente1);
+
+    let contaCorrente2: ContaCorrente = new ContaCorrente(contas.gerarNumero(), 124, 1, "Maria da Silva", 2000, 100.0);
+    contas.cadastrar(contaCorrente2);
+
+    let contaPoupanca1: ContaPoupanca = new ContaPoupanca(contas.gerarNumero(), 125, 2, "Mariana dos Santos", 4000, 12);
+    contas.cadastrar(contaPoupanca1);
+
+    let contaPoupanca2: ContaPoupanca = new ContaPoupanca(contas.gerarNumero(), 125, 2, "Juliana Ramos", 8000, 15);
+    contas.cadastrar(contaPoupanca2);
+
+    contas.listarTodas();
+
 
     while (true) {
 
@@ -57,11 +65,27 @@ export function main() {
         switch (opcao) {
             case 1:
                 console.log(colors.fg.whitestrong, "\n\nCriar Conta\n\n", colors.reset);
+                agencia = readlinesync.questionInt("Digite o Numero da agencia: ");
+                titular = readlinesync.question("Digite o nome do Titular da Conta: ");
+                tipo = readlinesync.keyInSelect(tiposContas, "Digite o tipo da Conta: ", { cancel: false }) + 1;
+                saldo = readlinesync.questionFloat("Digite o saldo da Conta: R$");
 
+                switch (tipo) {
+                    case 1:
+                        limite = readlinesync.questionFloat("Digite o Limite da Conta: R$");
+                        contas.cadastrar(new ContaCorrente(contas.gerarNumero(), agencia, tipo, titular, saldo, limite));
+                        break;
+
+                    case 2:
+                        aniversario = readlinesync.questionInt("Digite o dia do aniversario da Conta Poupanca: ");
+                        contas.cadastrar(new ContaPoupanca(contas.gerarNumero(), agencia, tipo, titular, saldo, aniversario));
+                        break;
+                }
                 keyPress()
                 break;
             case 2:
                 console.log(colors.fg.whitestrong, "\n\nListar todas as Contas\n\n", colors.reset);
+                contas.listarTodas();
 
                 keyPress()
                 break;
